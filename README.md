@@ -1,5 +1,6 @@
 # zabbix_tsm_template v6.4
-TSM checks via passive zabbix agent
+Template TSM checks via passive zabbix agent
+
 This is collection of zabbix v6.4 template, zabbix agent config and bash script, that will allow you to monitor IBM TSM instance via passive agent checks.
 For the checks to work you need zabbix agent and tsm administrative client (dsmadmc).
 This configuration was tested with TSM 6.3 and zabbix server 6.4.21.
