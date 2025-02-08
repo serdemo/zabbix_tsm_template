@@ -15,5 +15,5 @@ Place config file tsm_checks.cfg to the directory with optional configuration fi
 
 Edit configuration variables inside the script zbx_tsm.sh (usually you only need to edit user:password variables to connect to TSM with administrative client).
 
-Import template zabbix_tsm_template_v6.4.yaml to your zabbix server, then atach the template to the host to be monitored.
+Import template zabbix_tsm_template_v6.4.yaml to your zabbix server, then attach the template to the host to be monitored.
 
