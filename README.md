@@ -5,8 +5,10 @@ This is collection of zabbix v6.4 template, zabbix agent config and bash script,
 For the checks to work you need zabbix agent and tsm administrative client (dsmadmc) installed on the monitored host.
 This configuration was tested with TSM 6.3 and zabbix server 6.4.21.
 
-Place bash script zbx_tsm.sh to /etc/zabbix/bin and set permissions and owner: 
+Place bash script zbx_tsm.sh to /etc/zabbix/bin and set permissions and owner:
+
 chmod 0750 /etc/zabbix/bin/zbx_tsm.sh
+
 chown root:zabbix /etc/zabbix/bin/zbx_tsm.sh
 
 Make sure the directory /etc/zabbix/bin is included in main zabbix agent configuration file (/etc/zabbix/zabbix_agent.conf),
