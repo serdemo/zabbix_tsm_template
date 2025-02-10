@@ -17,7 +17,7 @@ chmod 0750 /etc/zabbix/bin/zbx_tsm.sh
 ```
 Place UserParameter configuration file zbx_tsm_checks.conf to the directory set by option 'Include=' in zabbix_agentd.conf (usually /etc/zabbix/zabbix_agentd.d/) and make sure that zabbix user can read it, then restart zabbix agent service.
 
-Edit configuration variables inside the script zbx_tsm.sh (usually you only need to edit user:pass variables to connect to TSM with administrative client).
+Edit configuration variables inside the script zbx_tsm.sh (usually you only need to edit user:pass variables).
 ```
 tmp_dir=/tmp/zbxtsm            # - directory will be created by the script
 tsm_binary="/usr/bin/dsmadmc"  # - path to TSM administrative client executable
