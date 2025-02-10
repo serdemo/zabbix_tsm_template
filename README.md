@@ -2,9 +2,9 @@
 Template TSM checks via passive zabbix agent
 
 This repository includes:
-zbx_tsm_template_v6.4.yaml - zabbix server v6.4 template file;
-zbx_tsm_checks.conf - zabbix agent UserParameter configuration file;
-zbx_tsm.sh - bash script with the collection of functions for monitoring IBM TSM instance via passive zabbix agent checks.
+- zbx_tsm_template_v6.4.yaml - zabbix server v6.4 template file;
+- zbx_tsm_checks.conf - zabbix agent UserParameter configuration file;
+- zbx_tsm.sh - bash script with the collection of functions for monitoring IBM TSM instance via passive zabbix agent checks.
 
 The configuration was tested with TSM administrative client 6.2.5, TSM server 6.2.4 on AIX 7.1 and zabbix server 6.4.21.
 
