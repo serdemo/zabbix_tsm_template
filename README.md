@@ -19,7 +19,7 @@ Place UserParameter configuration file zbx_tsm_checks.conf to the directory set 
 
 Edit configuration variables inside the script zbx_tsm.sh (usually you only need to edit user:pass variables).
 ```
-tmp_dir=/tmp/zbxtsm            # - directory will be created by the script
+tmp_dir=/tmp/zbxtsm            # - directory for data files will be created by the script
 tsm_binary="/usr/bin/dsmadmc"  # - path to TSM administrative client executable
 tsm_user="USER"                # - TSM user id
 tsm_pass="PASSWORD"            # - TSM user password
