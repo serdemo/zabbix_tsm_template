@@ -2,7 +2,7 @@
 TSM checks via passive zabbix agent
 
 This repository includes:
-- zbx_tsm_template_v6.4.yaml - zabbix server v6.4 template file;
+- zbx_tsm_template.yaml - zabbix server v6.4 template file for monitoring IBM TSM v6.2 server;
 - zbx_tsm_checks.conf - zabbix agent UserParameter configuration file;
 - zbx_tsm.sh - bash script with the collection of functions for monitoring IBM TSM instance via passive zabbix agent checks.
 
@@ -30,7 +30,7 @@ A few heavy (long running) lld functions should be added to zabbix agent's user 
 # Zabbix: TSM lld discovery
 0 * * * * /etc/zabbix/bin/zbx_tsm.sh nodedata_cronjob > /dev/null 2>&1
 10 * * * * /etc/zabbix/bin/zbx_tsm.sh clisched_cronjob > /dev/null 2>&1
-20 7,19 * * * /etc/zabbix/bin/zbx_tsm.sh nodes_cronjob  > /dev/null 2>&1
+20 7,19 * * * /etc/zabbix/bin/zbx_tsm.sh nodes_cronjob > /dev/null 2>&1
 ```
 
-Import template file zbx_tsm_template_v6.4.yaml to your zabbix server, then attach the template to the host to be monitored. That's it!
+Import template file zbx_tsm_template.yaml to your zabbix server, then attach the template to the host to be monitored. That's it!
