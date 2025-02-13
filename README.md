@@ -1,4 +1,4 @@
-# zabbix_tsm_template v6.4
+# zabbix_tsm_template | zabbix 6.4 | tsm 6.2
 Template TSM checks via passive zabbix agent
 
 This repository includes:
@@ -30,6 +30,7 @@ A few heavy (long running) lld functions should be added to zabbix agent's user 
 # Zabbix: TSM lld discovery
 0 * * * * /etc/zabbix/bin/zbx_tsm.sh nodedata_cronjob > /dev/null 2>&1
 10 * * * * /etc/zabbix/bin/zbx_tsm.sh clisched_cronjob > /dev/null 2>&1
+20 7,19 * * * /etc/zabbix/bin/zbx_tsm.sh nodes_cronjob  > /dev/null 2>&1
 ```
 
 Import template file zbx_tsm_template_v6.4.yaml to your zabbix server, then attach the template to the host to be monitored. That's it!
