@@ -1,5 +1,5 @@
 # zabbix_tsm_template | zabbix 6.4 | tsm 6.2
-Template TSM checks via passive zabbix agent
+TSM checks via passive zabbix agent
 
 This repository includes:
 - zbx_tsm_template_v6.4.yaml - zabbix server v6.4 template file;
