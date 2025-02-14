@@ -1,0 +1,2118 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: 7df96b18c230490a9a0a9e2307226338
+      name: Templates
+  templates:
+    - uuid: 6748a1c481a94e75ba7420809c09e33f
+      template: 'Template TSM checks zabbix agent passive'
+      name: 'Template TSM checks zabbix agent passive'
+      groups:
+        - name: Templates
+      items:
+        - uuid: 1bfac868d0d54a73817e83eb0bb57ce0
+          name: 'Get client schedule manually'
+          key: clisched_cronjob
+          delay: 1h
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          status: DISABLED
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: 2f8b9c06cc764136b5f5a55e5f74d743
+          name: 'Get client schedule'
+          key: clisched_get
+          delay: 1h
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: 9c2f5d9dffc0417c922a8f50f1a89bc8
+          name: 'TSM instance database utilization'
+          key: db_usage
+          delay: 5m
+          history: 14d
+          value_type: FLOAT
+          units: '%'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+            - tag: Application
+              value: 'TSM status'
+          triggers:
+            - uuid: d4dfd5b2b9cb459fbffdaa27f058c133
+              expression: 'min(/Template TSM checks zabbix agent passive/db_usage,{$TSM.DB.SPACE.LOW.DURATION})>={$TSM.DB.SPACE.USAGE.CRIT}'
+              name: 'TSM db utilization is critically high: {ITEM.VALUE1}'
+              priority: HIGH
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admins'
+            - uuid: aa1d875674fc4e2faa539f4a9abc3cde
+              expression: 'min(/Template TSM checks zabbix agent passive/db_usage,{$TSM.DB.SPACE.LOW.DURATION})>={$TSM.DB.SPACE.USAGE.WARN}'
+              name: 'TSM db utilization is high: {ITEM.VALUE1}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admins'
+        - uuid: 89142e4b7f0e4761a4e01544e0b546b7
+          name: 'Get administrative schedule'
+          key: discover_adm_sched
+          delay: 1h
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: fb0aaa09ebe3498496891e7f95f3fc5c
+          name: 'Get dbbackup volumes'
+          key: discover_dbbak_vol
+          delay: 30m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: 3fa17452e71d45c2bbf868467115aff3
+          name: 'Get drives'
+          key: discover_drives
+          delay: 10m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: e2befa2a948f4bc49678b77650a24ab9
+          name: 'Get library'
+          key: discover_libr
+          delay: 10m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: 89b6d2c60da24237952979d807ec8813
+          name: 'Get policies'
+          key: discover_policy
+          delay: 10m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: dfcd7a9df74947b9a237588aacd068f0
+          name: 'Get stgpool'
+          key: discover_stgp
+          delay: 30m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: 528b1263082945319b93a691c19128ff
+          name: 'Get volumes'
+          key: discover_vol
+          delay: 30m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: c5bd0f32e2ba4f3a883d4af50b89faae
+          name: 'Get nodedata'
+          key: nodedata_get
+          delay: 1h
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: cdcda370e61b45a6a2f3570d7e1ab325
+          name: 'Get nodes'
+          key: nodes_get
+          delay: 2h
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+        - uuid: fdd763161d3c4ebbaa6d28a83a23bae4
+          name: 'TSM server start time'
+          key: tsm_uptime
+          delay: 2m
+          history: 14d
+          value_type: CHAR
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+            - tag: Application
+              value: 'TSM status'
+          triggers:
+            - uuid: e67eb1613f1c4d80b6fd050521c297ed
+              expression: 'nodata(/Template TSM checks zabbix agent passive/tsm_uptime,{$TSM.NODATA_TIMEOUT})=1'
+              name: 'TSM server is offline or unreachable'
+              priority: HIGH
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admins'
+            - uuid: 42e8ebd97a974efbbf226ffede1eaaf2
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm_uptime)<>last(/Template TSM checks zabbix agent passive/tsm_uptime,#2) and last(/Template TSM checks zabbix agent passive/tsm_uptime)<>last(/Template TSM checks zabbix agent passive/tsm_uptime,#3)'
+              name: 'TSM server uptime has changed: {ITEM.VALUE1}'
+              priority: INFO
+              manual_close: 'YES'
+              dependencies:
+                - name: 'TSM server is offline or unreachable'
+                  expression: 'nodata(/Template TSM checks zabbix agent passive/tsm_uptime,{$TSM.NODATA_TIMEOUT})=1'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admins'
+      discovery_rules:
+        - uuid: 8a623befd5814918ad86229f08ed5205
+          name: 'Discover TSM administrative schedule'
+          type: DEPENDENT
+          key: lld.disc.tsm.admsched
+          delay: '0'
+          filter:
+            conditions:
+              - macro: '{#ADM_SCHED_ACTIVE}'
+                value: '{$TSM.LLD.ADMSCHED.ACTIVITY.SATE}'
+                formulaid: A
+              - macro: '{#ADM_SCHED_NAME}'
+                value: '{$TSM.LLD.ADMSCHED.INCLUDE}'
+                formulaid: B
+          lifetime: '0'
+          item_prototypes:
+            - uuid: be4da0a126834e0f81e9ea3db31c0526
+              name: 'TSM adm schedule: recently failed tasks {#ADM_SCHED_NAME}'
+              key: 'get_failed_admsched[{#ADM_SCHED_NAME},{#ADM_SCHED_WINDOW_HOUR}]'
+              delay: 1h
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+              trigger_prototypes:
+                - uuid: 8e3cb25a79d6453eb7fec38e274d4968
+                  expression: 'last(/Template TSM checks zabbix agent passive/get_failed_admsched[{#ADM_SCHED_NAME},{#ADM_SCHED_WINDOW_HOUR}])>={$TSM.ADMSCHED.FAILED.RECENT.HIGH:"{#ADM_SCHED_NAME}"}'
+                  name: 'TSM: AdmSchedule: {#ADM_SCHED_NAME}: Recently failed tasks: {ITEM.VALUE1}'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM AdmSchedule {#ADM_SCHED_NAME}'
+            - uuid: e9d38f032e6c4d80941e08327e2007c5
+              name: 'TSM adm schedule: active {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.active[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_active'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+            - uuid: 6ee7198353a84da799f7673785a4d94b
+              name: 'TSM adm schedule: last changed {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.changed[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_last_changed'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+              trigger_prototypes:
+                - uuid: 9bcc6937244545be9f31b698d6231347
+                  expression: 'change(/Template TSM checks zabbix agent passive/tsm.admsched.changed[{#ADM_SCHED_NAME}])>1'
+                  name: 'TSM: AdmSchedule: {#ADM_SCHED_NAME}: last changed: {ITEM.VALUE1}'
+                  priority: INFO
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM AdmSchedule {#ADM_SCHED_NAME}'
+            - uuid: b01949fa5ff3419a95b9c812a1179206
+              name: 'TSM adm schedule: number of completed tasks yesterday {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.done_y[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_done_y'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+            - uuid: e478a25d8dbd40b9b188a259b51eeaba
+              name: 'TSM adm schedule: expiration {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.expire[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_expire'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+            - uuid: affb8b497a8041d5878374ca761ec4ef
+              name: 'TSM adm schedule: number of failed tasks yesterday {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.fail_y[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_fail_y'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+              trigger_prototypes:
+                - uuid: fd5a8e1496414ace8cec8a12bc3fca02
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.admsched.fail_y[{#ADM_SCHED_NAME}])>={$TSM.ADMSCHED.FAILED.HIGH:"{#ADM_SCHED_NAME}"}'
+                  name: 'TSM: AdmSchedule: {#ADM_SCHED_NAME}: Too many failed tasks yesterday (>={$TSM.ADMSCHED.FAILED.HIGH:"{#ADM_SCHED_NAME}"}): {ITEM.VALUE1}'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM AdmSchedule {#ADM_SCHED_NAME}'
+            - uuid: d111e2c2b2e04951bb13667e67778181
+              name: 'TSM adm schedule: number of missed tasks yesterday {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.miss_y[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_miss_y'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+              trigger_prototypes:
+                - uuid: e38c5fa9c74f4e3ea432a5f3cae24f87
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.admsched.miss_y[{#ADM_SCHED_NAME}])>={$TSM.ADMSCHED.MISSED.HIGH:"{#ADM_SCHED_NAME}"}'
+                  name: 'TSM: AdmSchedule: {#ADM_SCHED_NAME}: Too many missed tasks yesterday (>={$TSM.ADMSCHED.MISSED.HIGH:"{#ADM_SCHED_NAME}"}): {ITEM.VALUE1}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM AdmSchedule {#ADM_SCHED_NAME}'
+            - uuid: 4e77439305fd426d8024c2d3ea722fd1
+              name: 'TSM adm schedule: priority {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.prior[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_prior'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+            - uuid: 51c2715f2578417799185b735789fc31
+              name: 'TSM adm schedule: timetable {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.timetbl[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 30d
+              value_type: TEXT
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_start'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+            - uuid: 14497529d01e4e24a5ab8c19f58cce58
+              name: 'TSM adm schedule: window {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.window[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_window'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+            - uuid: 2e9b3fb0b2534dedbb77410b7235acdc
+              name: 'TSM adm schedule: converted to hours window {#ADM_SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.admsched.window_h[{#ADM_SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.adm_sched_name == ''{#ADM_SCHED_NAME}'')].adm_sched_window_hours'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_adm_sched
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM AdmSchedules'
+          master_item:
+            key: discover_adm_sched
+          lld_macro_paths:
+            - lld_macro: '{#ADM_SCHED_ACTIVE}'
+              path: $.adm_sched_active
+            - lld_macro: '{#ADM_SCHED_NAME}'
+              path: $.adm_sched_name
+            - lld_macro: '{#ADM_SCHED_WINDOW_HOUR}'
+              path: $.adm_sched_window_hours
+        - uuid: 6e2cecc5d775416bab896909a3160d58
+          name: 'Discover TSM client schedule'
+          type: DEPENDENT
+          key: lld.disc.tsm.clisched
+          delay: '0'
+          filter:
+            evaltype: FORMULA
+            formula: 'A and (B or C)'
+            conditions:
+              - macro: '{#SCHED_NAME}'
+                value: '{$TSM.LLD.SCHED.INCLUDE}'
+                formulaid: A
+              - macro: '{#SCHED_DOM}'
+                value: '{$TSM.LLD.SCHED.POLDOM.EXCLUDE}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
+              - macro: '{#SCHED_NUM_ASSOC}'
+                value: '{$TSM.LLD.SCHED.NUM.ASSOC.EXCLUDE}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: C
+          lifetime: '0'
+          description: |
+            Add cron job on the agent before enabling this discovery rule:
+            # Zabbix TSM schedules discovery
+            10 * * * * /etc/zabbix/bin/zbx_tsm.sh clisched_cronjob > /dev/null 2>&1
+          item_prototypes:
+            - uuid: 4da2a4d596524f678324086f86fa9ef7
+              name: 'TSM client schedule: recently failed tasks {#SCHED_DOM} {#SCHED_NAME}'
+              key: 'get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}]'
+              delay: 1h
+              history: 7d
+              value_type: TEXT
+              trends: '0'
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: ea79d659dc01414aa7571c260b015b80
+              name: 'TSM client schedule: last changed {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.changed[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_last_changed'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 2h
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: a522aa9cd5d44ccbbb6a769bd8705e55
+              name: 'TSM client schedule: number of completed tasks yesterday {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.done_y[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 14d
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_done_y'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: e80d8194d9924cf38927c433bcc97aa0
+              name: 'TSM client schedule: expiration {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.expire[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_expire'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: 6e2d366616b54c348082cbc444ac7ab0
+              name: 'TSM client schedule: number of failed tasks yesterday {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.fail_y[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 14d
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_fail_y'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: c488e7017a40456995583e03244d2e2f
+              name: 'TSM client schedule: number of missed tasks yesterday {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.miss_y[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 14d
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_miss_y'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: bc076c282e3a401f961ca43d05bc4490
+              name: 'TSM client schedule name: {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_name'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: 3e1090b8573741f3b23ac63118655a6d
+              name: 'TSM client schedule: number of clients {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.numassoc[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 14d
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_num_assoc'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: 9a9ed4fe499643f68b9717dd82a581b3
+              name: 'TSM client schedule: priority {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.prior[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_prior'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: d7c821787256488a9661e30bef3c10e3
+              name: 'TSM client schedule: timetable {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.timetbl[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: TEXT
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_start'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: 3af2ac600f0143b1bef36558c42e89d9
+              name: 'TSM client schedule: window {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.window[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_window'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+            - uuid: 163ae318964f4574842ac0a57e5e29f1
+              name: 'TSM client schedule: converted to hours window {#SCHED_DOM} {#SCHED_NAME}'
+              type: DEPENDENT
+              key: 'tsm.sched.window_h[{#SCHED_DOM},{#SCHED_NAME}]'
+              delay: '0'
+              history: 7d
+              trends: '0'
+              description: 'Converted to hours schedule window duration. Minimum: 1h; Maximum: 168h;'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.sched_name == ''{#SCHED_NAME}'' && @.sched_dom == ''{#SCHED_DOM}'')].sched_window_hours'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: clisched_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM schedules'
+          trigger_prototypes:
+            - uuid: 88857af459c64bd3bd00de5636ef7c53
+              expression: '(length(last(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}]))>0 and count(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}],#2)=1 and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.RECENT.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0) or (length(last(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}]))>0 and change(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}])=1 and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.RECENT.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0)'
+              name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Recently failed on: {ITEM.VALUE1}'
+              priority: AVERAGE
+              type: MULTIPLE
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admin'
+                - tag: Notify
+                  value: 'TSM sched {#SCHED_NAME}'
+            - uuid: 0ed54478bd52432c89de4710a340443b
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.fail_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0'
+              name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Too many failed tasks yesterday (>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"}): {ITEM.VALUE1}'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admin'
+                - tag: Notify
+                  value: 'TSM sched {#SCHED_NAME}'
+            - uuid: 11c5247a26e0444fa736dacc07f9a147
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.miss_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0'
+              name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Too many missed tasks yesterday (>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"}): {ITEM.VALUE1}'
+              priority: WARNING
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admin'
+                - tag: Notify
+                  value: 'TSM sched {#SCHED_NAME}'
+            - uuid: 457133fff1ae452fb00ae41e26a559f3
+              expression: 'change(/Template TSM checks zabbix agent passive/tsm.sched.changed[{#SCHED_DOM},{#SCHED_NAME}])=1 and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0'
+              name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: was changed: {ITEM.VALUE1}'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admin'
+                - tag: Notify
+                  value: 'TSM sched {#SCHED_NAME}'
+          master_item:
+            key: clisched_get
+          lld_macro_paths:
+            - lld_macro: '{#SCHED_DOM}'
+              path: $.sched_dom
+            - lld_macro: '{#SCHED_NAME}'
+              path: $.sched_name
+            - lld_macro: '{#SCHED_NUM_ASSOC}'
+              path: $.sched_num_assoc
+            - lld_macro: '{#SCHED_WINDOW_HOUR}'
+              path: $.sched_window_hours
+        - uuid: 0ee7391e6acd4794a6fabcc3fa7b013f
+          name: 'Discover TSM dbbackup volume'
+          type: DEPENDENT
+          key: lld.disc.tsm.dbbak
+          delay: '0'
+          lifetime: '0'
+          item_prototypes:
+            - uuid: 868a9501fe5948c9a12acdb40e8898a3
+              name: 'TSM DB backup: last backup date'
+              type: DEPENDENT
+              key: 'tsm.dbbak_last[{#DBBAK_LAST}]'
+              delay: '0'
+              history: 14d
+              trends: '0'
+              units: unixtime
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.dbbak_last == ''{#DBBAK_LAST}'' )].dbbak_last.first()'
+                - type: DISCARD_UNCHANGED
+                  parameters:
+                    - ''
+              master_item:
+                key: discover_dbbak_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM DBbackup'
+              trigger_prototypes:
+                - uuid: 0e6ae63ba7554904a3bd22db1701e804
+                  expression: '(now() - last(/Template TSM checks zabbix agent passive/tsm.dbbak_last[{#DBBAK_LAST}]))>={$TSM.DBBAK.OLD.WARN}'
+                  name: 'TSM: DB backup is older than {$TSM.DBBAK.OLD.WARN}s'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+            - uuid: 7f7cfb03f218475a825ad84cb768bd5a
+              name: 'TSM DB backup volumes: backup date {#DBBAK_LIBRARY} {#DBBAK_VOL}'
+              type: DEPENDENT
+              key: 'tsm.dbbak_vol_date[{#DBBAK_LIBRARY},{#DBBAK_VOL}]'
+              delay: '0'
+              history: 14d
+              trends: '0'
+              units: unixtime
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.dbbak_vol == ''{#DBBAK_VOL}'' && @.dbbak_library == ''{#DBBAK_LIBRARY}'')].dbbak_date'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED
+                  parameters:
+                    - ''
+              master_item:
+                key: discover_dbbak_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM DBbackup'
+            - uuid: 2f89614e695b49109663ad0ab6addd69
+              name: 'TSM DB backup volumes: backup type {#DBBAK_LIBRARY} {#DBBAK_VOL}'
+              type: DEPENDENT
+              key: 'tsm.dbbak_vol_type[{#DBBAK_LIBRARY},{#DBBAK_VOL}]'
+              delay: '0'
+              history: 14d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.dbbak_vol == ''{#DBBAK_VOL}'' && @.dbbak_library == ''{#DBBAK_LIBRARY}'')].dbbak_type'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED
+                  parameters:
+                    - ''
+              master_item:
+                key: discover_dbbak_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM DBbackup'
+          master_item:
+            key: discover_dbbak_vol
+          lld_macro_paths:
+            - lld_macro: '{#DBBAK_LAST}'
+              path: $.dbbak_last
+            - lld_macro: '{#DBBAK_LIBRARY}'
+              path: $.dbbak_library
+            - lld_macro: '{#DBBAK_VOL}'
+              path: $.dbbak_vol
+        - uuid: b6d9f1037a0249cfb9ae8f332229d61c
+          name: 'Discover TSM drives'
+          type: DEPENDENT
+          key: lld.disc.tsm.drives
+          delay: '0'
+          lifetime: '0'
+          item_prototypes:
+            - uuid: 8e524ffd024c4f5e9d0886f3482429e8
+              name: 'TSM drive path {#LIB_NAME} {#DRV_NAME}'
+              type: DEPENDENT
+              key: 'tsm.drive.path[{#DRV_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.drv_name == ''{#DRV_NAME}'')].drv_path'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1h
+              master_item:
+                key: discover_drives
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM drives'
+              trigger_prototypes:
+                - uuid: 4a2b2c07733142269fc1287922a1dbc0
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.drive.path[{#DRV_NAME}],#1)<>{$TSM.DRIVE.PATH.GOOD.STATUS} and last(/Template TSM checks zabbix agent passive/tsm.drive.path[{#DRV_NAME}],#2)<>{$TSM.DRIVE.PATH.GOOD.STATUS}'
+                  name: 'TSM: Failed drive path: {#LIB_NAME} {#DRV_NAME} status: {ITEM.VALUE1}'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM library {#LIB_NAME}'
+            - uuid: 162b063d2d2545dfadb5a45fed56da8e
+              name: 'TSM drive status {#LIB_NAME} {#DRV_NAME}'
+              type: DEPENDENT
+              key: 'tsm.drive.status[{#DRV_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.drv_name == ''{#DRV_NAME}'')].drv_status'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1h
+              master_item:
+                key: discover_drives
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM drives'
+              trigger_prototypes:
+                - uuid: c1506c88bc824366bb446c171cbd263a
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.drive.status[{#DRV_NAME}],#1)<>{$TSM.DRIVE.GOOD.STATUS} and last(/Template TSM checks zabbix agent passive/tsm.drive.status[{#DRV_NAME}],#2)<>{$TSM.DRIVE.GOOD.STATUS}'
+                  name: 'TSM: Failed drive state: {#LIB_NAME} {#DRV_NAME} status: {ITEM.VALUE1}'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM library {#LIB_NAME}'
+          master_item:
+            key: discover_drives
+          lld_macro_paths:
+            - lld_macro: '{#DRV_NAME}'
+              path: $.drv_name
+            - lld_macro: '{#LIB_NAME}'
+              path: $.lib_name
+        - uuid: 1ec2ebabe1b54f63ac9df2da59c9e965
+          name: 'Discover TSM libraries'
+          type: DEPENDENT
+          key: lld.disc.tsm.library
+          delay: '0'
+          lifetime: '0'
+          item_prototypes:
+            - uuid: d6b03b57d0b34975b09ab5cbb6d9e349
+              name: 'TSM library: number of TSM backup volumes {#LIB_NAME}'
+              type: DEPENDENT
+              key: 'tsm.lib.bakvol[{#LIB_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.lib_name == ''{#LIB_NAME}'')].lib_vol_bak'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_libr
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM library'
+            - uuid: 882be8b473e8469d81f90fed140ff9b2
+              name: 'TSM library: number of data volumes {#LIB_NAME}'
+              type: DEPENDENT
+              key: 'tsm.lib.datvol[{#LIB_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.lib_name == ''{#LIB_NAME}'')].lib_vol_dat'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_libr
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM library'
+            - uuid: e0ac6f53d36848d9b3e2d8a8061d1c06
+              name: 'TSM library: number of scratch volumes {#LIB_NAME}'
+              type: DEPENDENT
+              key: 'tsm.lib.scrvol[{#LIB_NAME}]'
+              delay: '0'
+              history: 14d
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.lib_name == ''{#LIB_NAME}'')].lib_vol_scr'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_libr
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM library'
+              trigger_prototypes:
+                - uuid: 57a7c4367ca544f2915a90cca63cb9d7
+                  expression: 'max(/Template TSM checks zabbix agent passive/tsm.lib.scrvol[{#LIB_NAME}],{$TSM.LIB.SCRATCH.LOW.DUR:"{#LIB_NAME}"})<={$TSM.LIB.SCRATCH.LOW:"{#LIB_NAME}"}'
+                  name: 'TSM: Library: {#LIB_NAME} is low on scratch volumes (<={$TSM.LIB.SCRATCH.LOW:"{#LIB_NAME}"}): {ITEM.VALUE1}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM library {#LIB_NAME}'
+            - uuid: 189de6c6c05344bd84e1ecea7569750c
+              name: 'TSM library: status {#LIB_NAME}'
+              type: DEPENDENT
+              key: 'tsm.lib.status[{#LIB_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.lib_name == ''{#LIB_NAME}'')].lib_status'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED
+                  parameters:
+                    - ''
+              master_item:
+                key: discover_libr
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM library'
+              trigger_prototypes:
+                - uuid: 7368d214301d4429a6b54074f616099c
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.lib.status[{#LIB_NAME}])<>{$TSM.LIB.GOOD.STATUS}'
+                  name: 'TSM: Library: {#LIB_NAME} bad state: {ITEM.VALUE1}'
+                  priority: HIGH
+                  manual_close: 'YES'
+                  dependencies:
+                    - name: 'TSM server is offline or unreachable'
+                      expression: 'nodata(/Template TSM checks zabbix agent passive/tsm_uptime,{$TSM.NODATA_TIMEOUT})=1'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM library {#LIB_NAME}'
+          master_item:
+            key: discover_libr
+          lld_macro_paths:
+            - lld_macro: '{#LIB_NAME}'
+              path: $.lib_name
+        - uuid: 5536beaa0e1d42c1a5cb103843c7769d
+          name: 'Discover TSM nodedata'
+          type: DEPENDENT
+          key: lld.disc.tsm.nodedata
+          delay: '0'
+          status: DISABLED
+          filter:
+            conditions:
+              - macro: '{#STGP_NAME}'
+                value: '{$TSM.LLD.STGP.EXCLUDE2}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: A
+              - macro: '{#STGP_NAME}'
+                value: '{$TSM.LLD.STGP.INCLUDE2}'
+                formulaid: B
+          lifetime: '0'
+          description: |
+            Add cron job on the agent before enabling this discovery rule:
+            # Zabbix TSM nodedata discovery
+            0 * * * * /etc/zabbix/bin/zbx_tsm.sh nodedata_cronjob > /dev/null 2>&1
+          item_prototypes:
+            - uuid: 0884c1f915d446ef9df1de49d4c18c74
+              name: 'TSM client data (MB): {#STGP_NAME}: {#NODE_NAME}'
+              type: DEPENDENT
+              key: 'tsm.nodedata.mb[{#STGP_NAME}, {#NODE_NAME}]'
+              delay: '0'
+              history: 14d
+              value_type: FLOAT
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.stgp_name == ''{#STGP_NAME}'' && @.node_name == ''{#NODE_NAME}'')].node_data_mb'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: MULTIPLIER
+                  parameters:
+                    - '1048576'
+              master_item:
+                key: nodedata_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM data'
+          master_item:
+            key: nodedata_get
+          lld_macro_paths:
+            - lld_macro: '{#NODE_NAME}'
+              path: $.node_name
+            - lld_macro: '{#STGP_NAME}'
+              path: $.stgp_name
+        - uuid: 2431c0d0f3f44214bce37a23ccdbd654
+          name: 'Discover TSM Nodes'
+          type: DEPENDENT
+          key: lld.disc.tsm.nodes
+          delay: '0'
+          status: DISABLED
+          filter:
+            evaltype: FORMULA
+            formula: '(A or B) and (C or D)'
+            conditions:
+              - macro: '{#NODE_NAME}'
+                value: '{$TSM.LLD.NODES.EXCLUDE}'
+                formulaid: A
+              - macro: '{#NODE_NAME}'
+                value: '{$TSM.LLD.NODES.INCLUDE}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
+              - macro: '{#POL_DOM}'
+                value: '{$TSM.LLD.NODES.POLDOM.INCLUDE}'
+                formulaid: C
+              - macro: '{#POL_DOM}'
+                value: '{$TSM.LLD.NODES.POLDOM.EXCLUDE}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: D
+          lifetime: '0'
+          description: |
+            Add cron job on the agent before enabling this discovery rule:
+            # Zabbix TSM nodes discovery
+            20 7,19 * * * /etc/zabbix/bin/zbx_tsm.sh nodes_cronjob  > /dev/null 2>&1
+            
+            NOTE: Depending on the number of registered tsm nodes this task may take a lot of time to complete. Consider it when scheduling the intervals.
+          item_prototypes:
+            - uuid: 48093e0bb7124f80b381f029b7d5fae9
+              name: 'TSM client: last backup date {#POL_DOM} {#NODE_NAME}'
+              type: DEPENDENT
+              key: 'tsm.node.bakdate[{#POL_DOM},{#NODE_NAME}]'
+              delay: '0'
+              history: 14d
+              trends: '0'
+              units: unixtime
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.node_name == ''{#NODE_NAME}'' && @.node_pdom == ''{#POL_DOM}'')].node_lba_date'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: nodes_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM clients'
+            - uuid: 969bccb6b15f45e6bde017d72f6ac432
+              name: 'TSM client: last backup status {#POL_DOM} {#NODE_NAME}'
+              type: DEPENDENT
+              key: 'tsm.node.bakstatus[{#POL_DOM},{#NODE_NAME}]'
+              delay: '0'
+              history: 14d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.node_name == ''{#NODE_NAME}'' && @.node_pdom == ''{#POL_DOM}'')].node_lba_status'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: nodes_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM clients'
+            - uuid: 614f1183067f448a9ec2d2e7ecfce51a
+              name: 'TSM client: failed logon count {#POL_DOM} {#NODE_NAME}'
+              type: DEPENDENT
+              key: 'tsm.node.flogoncnt[{#POL_DOM},{#NODE_NAME}]'
+              delay: '0'
+              history: 14d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.node_name == ''{#NODE_NAME}'' && @.node_pdom == ''{#POL_DOM}'')].node_flogins'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: nodes_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM clients'
+              trigger_prototypes:
+                - uuid: 47c3dc52d4d1476fbb71ef41a8c4f54b
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.node.flogoncnt[{#POL_DOM},{#NODE_NAME}])>={$TSM.NODE.FLOGON.HIGH:"{#NODE_NAME}"}'
+                  name: 'TSM: Too many failed logon attepts (>{$TSM.NODE.FLOGON.HIGH:"{#NODE_NAME}"}) from node: {#NODE_NAME}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM node {#NODE_NAME}'
+            - uuid: 21c1beb93d7e4a8e9f1922e57e4284c3
+              name: 'TSM client: days since last access {#POL_DOM} {#NODE_NAME}'
+              type: DEPENDENT
+              key: 'tsm.node.laccess[{#POL_DOM},{#NODE_NAME}]'
+              delay: '0'
+              history: 14d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.node_name == ''{#NODE_NAME}'' && @.node_pdom == ''{#POL_DOM}'')].node_days_laccess'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: nodes_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM clients'
+            - uuid: cffce9d0c21b4e00bfe1096ba0e0819c
+              name: 'TSM client: number of associated schedules {#POL_DOM} {#NODE_NAME}'
+              type: DEPENDENT
+              key: 'tsm.node.numassoc[{#POL_DOM},{#NODE_NAME}]'
+              delay: '0'
+              history: 14d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.node_name == ''{#NODE_NAME}'' && @.node_pdom == ''{#POL_DOM}'')].nodes_assoc_num'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: nodes_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM clients'
+          master_item:
+            key: nodes_get
+          lld_macro_paths:
+            - lld_macro: '{#NODE_ASSOC_NUM}'
+              path: $.nodes_assoc_num
+            - lld_macro: '{#NODE_NAME}'
+              path: $.node_name
+            - lld_macro: '{#POL_DOM}'
+              path: $.node_pdom
+        - uuid: 2b83589d984c4f8499eea9bfdc59ef7c
+          name: 'Discover TSM policies'
+          type: DEPENDENT
+          key: lld.disc.tsm.pol
+          delay: '0'
+          lifetime: '0'
+          item_prototypes:
+            - uuid: aa23df7794b547a4b965ec7585534ed6
+              name: 'TSM Policy change pending: name: {#POL_DOM_NAME} set: {#POL_SET_NAME} mgclass: {#POL_MGMT_CLASS}'
+              type: DEPENDENT
+              key: 'tsm.pol.ch_pending[{#POL_DOM_NAME},{#POL_SET_NAME},{#POL_MGMT_CLASS}]'
+              delay: '0'
+              history: 30d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.pol_dom_name == ''{#POL_DOM_NAME}'' && @.pol_set_name == ''{#POL_SET_NAME}'' && @.pol_mgmt_class == ''{#POL_MGMT_CLASS}'')].pol_chnange_pending'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_policy
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM policy'
+              trigger_prototypes:
+                - uuid: b6bf6db121c946f09606d68cf7c259e6
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.pol.ch_pending[{#POL_DOM_NAME},{#POL_SET_NAME},{#POL_MGMT_CLASS}])={$TSM.POL.CHANGE.PENDING}'
+                  name: 'TSM: Policy change pending: name: {#POL_DOM_NAME} set: {#POL_SET_NAME} mgclass: {#POL_MGMT_CLASS}'
+                  priority: INFO
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+            - uuid: 437e5eb8067840788590e5df46ec75c7
+              name: 'TSM Policy last changed: name: {#POL_DOM_NAME} set: {#POL_SET_NAME} mgclass: {#POL_MGMT_CLASS}'
+              type: DEPENDENT
+              key: 'tsm.pol.last_chnaged[{#POL_DOM_NAME},{#POL_SET_NAME},{#POL_MGMT_CLASS}]'
+              delay: '0'
+              history: 30d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.pol_dom_name == ''{#POL_DOM_NAME}'' && @.pol_set_name == ''{#POL_SET_NAME}'' && @.pol_mgmt_class == ''{#POL_MGMT_CLASS}'')].pol_last_changed'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_policy
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM policy'
+          master_item:
+            key: discover_policy
+          lld_macro_paths:
+            - lld_macro: '{#POL_DOM_NAME}'
+              path: $.pol_dom_name
+            - lld_macro: '{#POL_MGMT_CLASS}'
+              path: $.pol_mgmt_class
+            - lld_macro: '{#POL_SET_NAME}'
+              path: $.pol_set_name
+        - uuid: 770813fc789845e1b72b57d2c9321ab4
+          name: 'Discover TSM StgPool'
+          type: DEPENDENT
+          key: lld.disc.tsm.stgpool
+          delay: '0'
+          filter:
+            conditions:
+              - macro: '{#STGP_NAME}'
+                value: '{$TSM.LLD.STGP.EXCLUDE}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: A
+              - macro: '{#STGP_NAME}'
+                value: '{$TSM.LLD.STGP.INCLUDE}'
+                formulaid: B
+          lifetime: '0'
+          item_prototypes:
+            - uuid: b0b309a1ca014e60b494809a5ecb4899
+              name: 'TSM StgPool: access mode {#STGP_NAME}'
+              type: DEPENDENT
+              key: 'tsm.stgp.acmode[{#STGP_NAME}]'
+              delay: '0'
+              history: 14d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.stgp_name == ''{#STGP_NAME}'')].stgp_acc_mode'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_stgp
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+            - uuid: fa22037b86344867a91e9f80d7ae493d
+              name: 'TSM StgPool: available scratch volumes {#STGP_NAME}'
+              type: CALCULATED
+              key: 'tsm.stgp.ascr[{#STGP_NAME}]'
+              delay: 30m
+              history: 7d
+              trends: '0'
+              params: 'last(//tsm.stgp.mscr[{#STGP_NAME}])-last(//tsm.stgp.uscr[{#STGP_NAME}])'
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+              trigger_prototypes:
+                - uuid: b856a35abe814ffe89f9d488057547e3
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.stgp.ascr[{#STGP_NAME}])<={$TSM.STGP.SCRATCH.LOW:"{#STGP_NAME}"}'
+                  name: 'TSM: StgPool: {#STGP_NAME} low on scratch volumes (<={$TSM.STGP.SCRATCH.LOW:"{#STGP_NAME}"}): {ITEM.VALUE1}'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM Stgpool {#STGP_NAME}'
+            - uuid: 1021c1c043bc439aa35311cf722642b0
+              name: 'TSM StgPool: max scratch volumes {#STGP_NAME}'
+              type: DEPENDENT
+              key: 'tsm.stgp.mscr[{#STGP_NAME}]'
+              delay: '0'
+              history: 14d
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.stgp_name == ''{#STGP_NAME}'')].stgp_max_scr'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_stgp
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+            - uuid: 56b95674dac74f4aa3e90cb4405bb258
+              name: 'TSM StgPool: estimated total capacity {#STGP_NAME}'
+              type: DEPENDENT
+              key: 'tsm.stgp.size[{#STGP_NAME}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.stgp_name == ''{#STGP_NAME}'')].stgp_size_b'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_stgp
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+            - uuid: 9448d8caad564392af23744b20e24e5f
+              name: 'TSM StgPool: type {#STGP_NAME}'
+              type: DEPENDENT
+              key: 'tsm.stgp.type[{#STGP_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.stgp_name == ''{#STGP_NAME}'')].stgp_type'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_stgp
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+            - uuid: 66e6701290c94c7489183adaee993841
+              name: 'TSM StgPool: used scratch volumes {#STGP_NAME}'
+              type: DEPENDENT
+              key: 'tsm.stgp.uscr[{#STGP_NAME}]'
+              delay: '0'
+              history: 14d
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.stgp_name == ''{#STGP_NAME}'')].stgp_used_scr'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_stgp
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+            - uuid: d60984cf1a2047718f7822c14c47e8e2
+              name: 'TSM StgPool: estimated used capacity {#STGP_NAME}'
+              type: CALCULATED
+              key: 'tsm.stgp.used[{#STGP_NAME}]'
+              delay: 30m
+              history: 7d
+              value_type: FLOAT
+              units: B
+              params: 'last(//tsm.stgp.size[{#STGP_NAME}]) * (last(//tsm.stgp.util[{#STGP_NAME}])/100)'
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+            - uuid: a2457c2a993c4477aa23557927c58204
+              name: 'TSM StgPool: utilization {#STGP_NAME}'
+              type: DEPENDENT
+              key: 'tsm.stgp.util[{#STGP_NAME}]'
+              delay: '0'
+              history: 14d
+              value_type: FLOAT
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.stgp_name == ''{#STGP_NAME}'')].stgp_util_pcnt'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_stgp
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM StgPool'
+              trigger_prototypes:
+                - uuid: e95603303bf94f2f9aa580f947968624
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.stgp.util[{#STGP_NAME}])>={$TSM.STGP.UTIL.HIGH:"{#STGP_NAME}"}'
+                  name: 'TSM: StgPool: {#STGP_NAME} utilization is high (>={$TSM.STGP.UTIL.HIGH:"{#STGP_NAME}"}%): {ITEM.VALUE1}'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM Stgpool {#STGP_NAME}'
+          master_item:
+            key: discover_stgp
+          lld_macro_paths:
+            - lld_macro: '{#STGP_NAME}'
+              path: $.stgp_name
+        - uuid: 52fe816c6ae246429d6b02bffa570feb
+          name: 'Discover TSM volumes'
+          type: DEPENDENT
+          key: lld.disc.tsm.vols
+          delay: '0'
+          filter:
+            conditions:
+              - macro: '{#VOL_NAME}'
+                value: '{$VOL_EXCLUDE}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: A
+          lifetime: '0'
+          item_prototypes:
+            - uuid: ea7c8124a93c46a8b658e256d8873a08
+              name: 'TSM volume access {#VOL_NAME}'
+              type: DEPENDENT
+              key: 'tsm.vol.acc[{#VOL_NAME}]'
+              delay: '0'
+              history: 14d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.vol_name == ''{#VOL_NAME}'')].vol_access'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM volumes'
+              trigger_prototypes:
+                - uuid: ee617bee6cef43baaf0cf682954640a8
+                  expression: 'find(/Template TSM checks zabbix agent passive/tsm.vol.acc[{#VOL_NAME}],1h,"iregexp","{$TSM.VOL.BAD.STATUS:''{#VOL_NAME}''}")=1'
+                  name: 'TSM: Volume: {#VOL_NAME} status is bad: {ITEM.VALUE1}'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM volume'
+            - uuid: 7dcaa5e8b1de43a3a953af25623c72c0
+              name: 'TSM volume read errors {#VOL_NAME}'
+              type: DEPENDENT
+              key: 'tsm.vol.err_r[{#VOL_NAME}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.vol_name == ''{#VOL_NAME}'')].vol_r_err'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM volumes'
+              trigger_prototypes:
+                - uuid: 0cdceffb015e40799dae4f4ba105468a
+                  expression: 'change(/Template TSM checks zabbix agent passive/tsm.vol.err_r[{#VOL_NAME}])>0'
+                  name: 'TSM: Volume: {#VOL_NAME} read errors count increased: {ITEM.VALUE1} error(s)'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM volume'
+            - uuid: 6bc9b33b709e41638787852318ecd3eb
+              name: 'TSM volume write errors {#VOL_NAME}'
+              type: DEPENDENT
+              key: 'tsm.vol.err_w[{#VOL_NAME}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.vol_name == ''{#VOL_NAME}'')].vol_w_err'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM volumes'
+              trigger_prototypes:
+                - uuid: babddf65af054d169f3375d66d831319
+                  expression: 'change(/Template TSM checks zabbix agent passive/tsm.vol.err_w[{#VOL_NAME}])>0'
+                  name: 'TSM: Volume: {#VOL_NAME} write errors count increased: {ITEM.VALUE1} error(s)'
+                  priority: WARNING
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM volume'
+            - uuid: 7dfb799a7c844245ba1a7fc4c424380a
+              name: 'TSM volume number of mounts {#VOL_NAME}'
+              type: DEPENDENT
+              key: 'tsm.vol.mounts[{#VOL_NAME}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.vol_name == ''{#VOL_NAME}'')].vol_mounts'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM volumes'
+              trigger_prototypes:
+                - uuid: 86d79f8f774140fab96cd4d19e7ad325
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.mounts[{#VOL_NAME}])={$TSM.VOL.TIMES.MOUNTED:"{#VOL_NAME}"}'
+                  name: 'TSM: Volume: {#VOL_NAME} times mounted: {ITEM.VALUE1} - consider replacing it'
+                  priority: INFO
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM volume'
+            - uuid: 813c405fb8644c0da37f249e0bdfb2f6
+              name: 'TSM volume error state {#VOL_NAME}'
+              type: DEPENDENT
+              key: 'tsm.vol.state[{#VOL_NAME}]'
+              delay: '0'
+              history: 14d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.vol_name == ''{#VOL_NAME}'')].vol_err_state'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+              master_item:
+                key: discover_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM volumes'
+              trigger_prototypes:
+                - uuid: 8db666a3a2e64077bc9c9e4d4c4078a5
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.state[{#VOL_NAME}])="Yes"'
+                  name: 'TSM: Volume: {#VOL_NAME} is in error state'
+                  priority: AVERAGE
+                  manual_close: 'YES'
+                  tags:
+                    - tag: Notify
+                      value: 'off'
+                    - tag: Notify
+                      value: 'TSM admins'
+                    - tag: Notify
+                      value: 'TSM volume'
+            - uuid: 1d347b2e38d745f19889660ea1933236
+              name: 'TSM volume storage pool {#VOL_NAME}'
+              type: DEPENDENT
+              key: 'tsm.vol.stgp[{#VOL_NAME}]'
+              delay: '0'
+              history: 14d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.vol_name == ''{#VOL_NAME}'')].vol_stgpool'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: discover_vol
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM volumes'
+          trigger_prototypes:
+            - uuid: 7a9d68198e434e1caac30a166396cf93
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.err_r[{#VOL_NAME}])>={$TSM.VOL.R_ERRS.HIGH:"{#VOL_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.vol.acc[{#VOL_NAME}],,"iregexp","read")=1'
+              name: 'TSM: Volume: {#VOL_NAME} number of read errors too high (>={$TSM.VOL.R_ERRS.HIGH:"{#VOL_NAME}"}): {ITEM.VALUE1} error(s)'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admins'
+                - tag: Notify
+                  value: 'TSM volume'
+            - uuid: 0501b5a16aa241a5808d6b4d2c82d1d7
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.err_w[{#VOL_NAME}])>={$TSM.VOL.W_ERRS.HIGH:"{#VOL_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.vol.acc[{#VOL_NAME}],,"iregexp","write")=1'
+              name: 'TSM: Volume: {#VOL_NAME} number of write errors too high (>={$TSM.VOL.W_ERRS.HIGH:"{#VOL_NAME}"}): {ITEM.VALUE1} error(s)'
+              priority: AVERAGE
+              manual_close: 'YES'
+              tags:
+                - tag: Notify
+                  value: 'off'
+                - tag: Notify
+                  value: 'TSM admins'
+                - tag: Notify
+                  value: 'TSM volume'
+          master_item:
+            key: discover_vol
+          lld_macro_paths:
+            - lld_macro: '{#VOL_NAME}'
+              path: $.vol_name
+      macros:
+        - macro: '{$TSM.ADMSCHED.FAILED.HIGH}'
+          value: '1'
+          description: 'Numer of missed adm schedules to alert on'
+        - macro: '{$TSM.ADMSCHED.FAILED.RECENT.HIGH}'
+          value: '1'
+          description: 'Numer of recently failed adm schedules to alert on'
+        - macro: '{$TSM.ADMSCHED.MISSED.HIGH}'
+          value: '1'
+          description: 'Numer of failed adm schedules to alert on'
+        - macro: '{$TSM.DB.SPACE.LOW.DURATION}'
+          value: 15m
+        - macro: '{$TSM.DB.SPACE.USAGE.CRIT}'
+          value: '95'
+        - macro: '{$TSM.DB.SPACE.USAGE.WARN}'
+          value: '90'
+        - macro: '{$TSM.DBBAK.OLD.WARN}'
+          value: '93600'
+          description: 'Alert on TSM db backup older than number of seconds'
+        - macro: '{$TSM.DRIVE.GOOD.STATUS}'
+          value: Online
+        - macro: '{$TSM.DRIVE.PATH.GOOD.STATUS}'
+          value: Online
+        - macro: '{$TSM.LIB.GOOD.STATUS}'
+          value: Online
+        - macro: '{$TSM.LIB.SCRATCH.LOW}'
+          value: '5'
+        - macro: '{$TSM.LIB.SCRATCH.LOW.DUR}'
+          value: 2h
+        - macro: '{$TSM.LLD.ADMSCHED.ACTIVITY.SATE}'
+          value: '.*'
+          description: 'Set AdmSchdeule active status (Yes/No) to limit discovery by status'
+        - macro: '{$TSM.LLD.ADMSCHED.INCLUDE}'
+          value: '.*'
+          description: 'List of administrative schedules to discover'
+        - macro: '{$TSM.LLD.NODES.EXCLUDE}'
+          value: '""'
+          description: 'Exclude nodes from discovery'
+        - macro: '{$TSM.LLD.NODES.INCLUDE}'
+          value: '.*'
+          description: 'Include nodes in discovery'
+        - macro: '{$TSM.LLD.NODES.POLDOM.EXCLUDE}'
+          value: '""'
+          description: 'Exclude nodes of specified policy domain from discovery'
+        - macro: '{$TSM.LLD.NODES.POLDOM.INCLUDE}'
+          value: '.*'
+          description: 'Include nodes of specified policy domain in discovery'
+        - macro: '{$TSM.LLD.SCHED.EXCLUDE}'
+          value: '""'
+          description: 'List of client schedules to exclude from discovery'
+        - macro: '{$TSM.LLD.SCHED.INCLUDE}'
+          value: '.*'
+        - macro: '{$TSM.LLD.SCHED.NUM.ASSOC.EXCLUDE}'
+          value: '0'
+          description: 'Exclude schedules without associated clients'
+        - macro: '{$TSM.LLD.SCHED.POLDOM.EXCLUDE}'
+          value: '""'
+          description: 'Exclude schedules that belong to specific policy domain'
+        - macro: '{$TSM.LLD.STGP.EXCLUDE}'
+          value: '""'
+          description: 'List of stgpools to exclude from stgpool discovery e.g. stgp1|stgp2'
+        - macro: '{$TSM.LLD.STGP.EXCLUDE2}'
+          value: '""'
+          description: 'List of stgpools to exclude from nodedata discovery e.g. stgp1|stgp2'
+        - macro: '{$TSM.LLD.STGP.INCLUDE}'
+          value: '.*'
+          description: 'List of stgpools to include in stgpool discovery e.g. stgp1|stgp2'
+        - macro: '{$TSM.LLD.STGP.INCLUDE2}'
+          value: '.*'
+          description: 'List of stgpools to include in nodedata discovery e.g. stgp1|stgp2'
+        - macro: '{$TSM.NODATA_TIMEOUT}'
+          value: 10m
+        - macro: '{$TSM.NODE.FLOGON.HIGH}'
+          value: '2'
+          description: 'Node''s failed logon count'
+        - macro: '{$TSM.POL.CHANGE.PENDING}'
+          value: 'Yes'
+          description: 'Notify on pending policy changes'
+        - macro: '{$TSM.SCHED.FAILED.HIGH}'
+          value: '2'
+          description: 'Numer of failed runs to alert on'
+        - macro: '{$TSM.SCHED.MISSED.HIGH}'
+          value: '2'
+          description: 'Number of missed runs to alert on'
+        - macro: '{$TSM.SCHED.RECENT.ALERT.EXCLUDE}'
+          value: '""'
+          description: 'Regexp list of schedules to exclude from alerting on today''s events'
+        - macro: '{$TSM.SCHED.YDAY.ALERT.EXCLUDE}'
+          value: '""'
+          description: 'Regexp list of schedules to exclude from alerting on previous day''s events'
+        - macro: '{$TSM.STGP.SCRATCH.LOW}'
+          value: '5'
+          description: 'Number of available volumes in pool to alert on'
+        - macro: '{$TSM.STGP.UTIL.HIGH}'
+          value: '95'
+          description: 'Utilization of storage pool in percent to alert'
+        - macro: '{$TSM.VOL.BAD.STATUS}'
+          value: Unavailable
+          description: 'regexp of possible bad statuses (Unavailable|Deleted)'
+        - macro: '{$TSM.VOL.R_ERRS.HIGH}'
+          value: '2'
+          description: 'Maximum volume read errors before alerting'
+        - macro: '{$TSM.VOL.TIMES.MOUNTED}'
+          value: '5000'
+          description: 'Number of mounts after which volume should be replaced'
+        - macro: '{$TSM.VOL.W_ERRS.HIGH}'
+          value: '2'
+          description: 'Maximum volume write errors before alerting'
+        - macro: '{$VOL_EXCLUDE}'
+          value: \.BFS
+          description: 'Volumes to exclude from volume discovery'
