@@ -34,3 +34,10 @@ A few heavy (long running) lld functions should be added to zabbix agent's user 
 ```
 
 Import template file zbx_tsm_template.yaml to your zabbix server, then attach the template to the host to be monitored. That's it!
+
+![image](https://github.com/user-attachments/assets/629bcba8-c20f-4dfb-92a7-df05c5ebd0dc)
+
+
+![image](https://github.com/user-attachments/assets/0738873a-6419-4173-9d1c-71ee579121fa)
+
+
