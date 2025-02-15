@@ -301,7 +301,7 @@ zabbix_export:
                     - \1
                 - type: DISCARD_UNCHANGED_HEARTBEAT
                   parameters:
-                    - 1d
+                    - 2h
               master_item:
                 key: discover_adm_sched
               tags:
@@ -863,7 +863,7 @@ zabbix_export:
                 - tag: Notify
                   value: 'TSM sched {#SCHED_NAME}'
             - uuid: 0ed54478bd52432c89de4710a340443b
-              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.fail_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0'
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.fail_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0 and time()<210000'
               name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Too many failed tasks yesterday (>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"}): {ITEM.VALUE1}'
               priority: AVERAGE
               manual_close: 'YES'
@@ -875,7 +875,7 @@ zabbix_export:
                 - tag: Notify
                   value: 'TSM sched {#SCHED_NAME}'
             - uuid: 11c5247a26e0444fa736dacc07f9a147
-              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.miss_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0'
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.miss_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0 and time()<210000'
               name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Too many missed tasks yesterday (>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"}): {ITEM.VALUE1}'
               priority: WARNING
               manual_close: 'YES'
