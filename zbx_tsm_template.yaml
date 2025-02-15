@@ -1301,10 +1301,10 @@ zabbix_export:
             formula: '(A or B) and (C or D)'
             conditions:
               - macro: '{#NODE_NAME}'
-                value: '{$TSM.LLD.NODES.EXCLUDE}'
+                value: '{$TSM.LLD.NODES.INCLUDE}'
                 formulaid: A
               - macro: '{#NODE_NAME}'
-                value: '{$TSM.LLD.NODES.INCLUDE}'
+                value: '{$TSM.LLD.NODES.EXCLUDE}'
                 operator: NOT_MATCHES_REGEX
                 formulaid: B
               - macro: '{#POL_DOM}'
