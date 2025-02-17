@@ -181,10 +181,9 @@ zabbix_export:
         - uuid: fdd763161d3c4ebbaa6d28a83a23bae4
           name: 'TSM server start time'
           key: tsm_uptime
-          delay: 2m
+          delay: 5m
           history: 14d
-          value_type: CHAR
-          trends: '0'
+          units: unixtime
           tags:
             - tag: Application
               value: TSM
@@ -204,7 +203,7 @@ zabbix_export:
                 - tag: Notify
                   value: 'TSM admins'
             - uuid: 42e8ebd97a974efbbf226ffede1eaaf2
-              expression: 'last(/Template TSM checks zabbix agent passive/tsm_uptime)<>last(/Template TSM checks zabbix agent passive/tsm_uptime,#2) and last(/Template TSM checks zabbix agent passive/tsm_uptime)<>last(/Template TSM checks zabbix agent passive/tsm_uptime,#3)'
+              expression: 'change(/Template TSM checks zabbix agent passive/tsm_uptime)>0'
               name: 'TSM server uptime has changed: {ITEM.VALUE1}'
               priority: INFO
               manual_close: 'YES'
@@ -216,6 +215,26 @@ zabbix_export:
                   value: 'off'
                 - tag: Notify
                   value: 'TSM admins'
+        - uuid: 0d5b3d1bc17b472bab8034e25f04730d
+          name: 'TSM server uptime seconds'
+          type: CALCULATED
+          key: tsm_uptime_s
+          delay: 5m
+          history: 1d
+          trends: '0'
+          units: s
+          params: 'now() - last(//tsm_uptime)'
+          preprocessing:
+            - type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - 1h
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
+            - tag: Application
+              value: 'TSM status'
       discovery_rules:
         - uuid: 8a623befd5814918ad86229f08ed5205
           name: 'Discover TSM administrative schedule'
@@ -243,7 +262,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
               trigger_prototypes:
                 - uuid: 8e3cb25a79d6453eb7fec38e274d4968
                   expression: 'last(/Template TSM checks zabbix agent passive/get_failed_admsched[{#ADM_SCHED_NAME},{#ADM_SCHED_WINDOW_HOUR}])>={$TSM.ADMSCHED.FAILED.RECENT.HIGH:"{#ADM_SCHED_NAME}"}'
@@ -282,7 +301,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
             - uuid: 6ee7198353a84da799f7673785a4d94b
               name: 'TSM adm schedule: last changed {#ADM_SCHED_NAME}'
               type: DEPENDENT
@@ -308,7 +327,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
               trigger_prototypes:
                 - uuid: 9bcc6937244545be9f31b698d6231347
                   expression: 'change(/Template TSM checks zabbix agent passive/tsm.admsched.changed[{#ADM_SCHED_NAME}])>1'
@@ -343,7 +362,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
             - uuid: e478a25d8dbd40b9b188a259b51eeaba
               name: 'TSM adm schedule: expiration {#ADM_SCHED_NAME}'
               type: DEPENDENT
@@ -369,7 +388,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
             - uuid: affb8b497a8041d5878374ca761ec4ef
               name: 'TSM adm schedule: number of failed tasks yesterday {#ADM_SCHED_NAME}'
               type: DEPENDENT
@@ -391,7 +410,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
               trigger_prototypes:
                 - uuid: fd5a8e1496414ace8cec8a12bc3fca02
                   expression: 'last(/Template TSM checks zabbix agent passive/tsm.admsched.fail_y[{#ADM_SCHED_NAME}])>={$TSM.ADMSCHED.FAILED.HIGH:"{#ADM_SCHED_NAME}"}'
@@ -426,7 +445,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
               trigger_prototypes:
                 - uuid: e38c5fa9c74f4e3ea432a5f3cae24f87
                   expression: 'last(/Template TSM checks zabbix agent passive/tsm.admsched.miss_y[{#ADM_SCHED_NAME}])>={$TSM.ADMSCHED.MISSED.HIGH:"{#ADM_SCHED_NAME}"}'
@@ -464,7 +483,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
             - uuid: 51c2715f2578417799185b735789fc31
               name: 'TSM adm schedule: timetable {#ADM_SCHED_NAME}'
               type: DEPENDENT
@@ -490,7 +509,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
             - uuid: 14497529d01e4e24a5ab8c19f58cce58
               name: 'TSM adm schedule: window {#ADM_SCHED_NAME}'
               type: DEPENDENT
@@ -516,7 +535,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
             - uuid: 2e9b3fb0b2534dedbb77410b7235acdc
               name: 'TSM adm schedule: converted to hours window {#ADM_SCHED_NAME}'
               type: DEPENDENT
@@ -538,7 +557,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM AdmSchedules'
+                  value: 'TSM adm schedule'
           master_item:
             key: discover_adm_sched
           lld_macro_paths:
@@ -585,7 +604,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: ea79d659dc01414aa7571c260b015b80
               name: 'TSM client schedule: last changed {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -611,7 +630,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: a522aa9cd5d44ccbbb6a769bd8705e55
               name: 'TSM client schedule: number of completed tasks yesterday {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -632,7 +651,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: e80d8194d9924cf38927c433bcc97aa0
               name: 'TSM client schedule: expiration {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -658,7 +677,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: 6e2d366616b54c348082cbc444ac7ab0
               name: 'TSM client schedule: number of failed tasks yesterday {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -679,7 +698,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: c488e7017a40456995583e03244d2e2f
               name: 'TSM client schedule: number of missed tasks yesterday {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -700,7 +719,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: bc076c282e3a401f961ca43d05bc4490
               name: 'TSM client schedule name: {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -726,7 +745,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: 3e1090b8573741f3b23ac63118655a6d
               name: 'TSM client schedule: number of clients {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -747,7 +766,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: 9a9ed4fe499643f68b9717dd82a581b3
               name: 'TSM client schedule: priority {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -772,7 +791,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: d7c821787256488a9661e30bef3c10e3
               name: 'TSM client schedule: timetable {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -798,7 +817,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: 3af2ac600f0143b1bef36558c42e89d9
               name: 'TSM client schedule: window {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -824,7 +843,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
             - uuid: 163ae318964f4574842ac0a57e5e29f1
               name: 'TSM client schedule: converted to hours window {#SCHED_DOM} {#SCHED_NAME}'
               type: DEPENDENT
@@ -847,11 +866,11 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM schedules'
+                  value: 'TSM client schedule'
           trigger_prototypes:
             - uuid: 88857af459c64bd3bd00de5636ef7c53
               expression: '(length(last(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}]))>0 and count(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}],#2)=1 and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.RECENT.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0) or (length(last(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}]))>0 and change(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}])=1 and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.RECENT.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0)'
-              name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Recently failed on: {ITEM.VALUE1}'
+              name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Recently failed task(s): {ITEM.VALUE1}'
               priority: AVERAGE
               type: MULTIPLE
               manual_close: 'YES'
@@ -861,9 +880,11 @@ zabbix_export:
                 - tag: Notify
                   value: 'TSM admin'
                 - tag: Notify
+                  value: 'TSM sched {#SCHED_DOM}'
+                - tag: Notify
                   value: 'TSM sched {#SCHED_NAME}'
             - uuid: 0ed54478bd52432c89de4710a340443b
-              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.fail_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0 and time()<210000'
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.fail_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0 and time()>050000 and time()<210000'
               name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Too many failed tasks yesterday (>={$TSM.SCHED.FAILED.HIGH:"{#SCHED_NAME}"}): {ITEM.VALUE1}'
               priority: AVERAGE
               manual_close: 'YES'
@@ -875,7 +896,7 @@ zabbix_export:
                 - tag: Notify
                   value: 'TSM sched {#SCHED_NAME}'
             - uuid: 11c5247a26e0444fa736dacc07f9a147
-              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.miss_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0 and time()<210000'
+              expression: 'last(/Template TSM checks zabbix agent passive/tsm.sched.miss_y[{#SCHED_DOM},{#SCHED_NAME}])>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.YDAY.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0 and time()>050000 and time()<210000'
               name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Too many missed tasks yesterday (>={$TSM.SCHED.MISSED.HIGH:"{#SCHED_NAME}"}): {ITEM.VALUE1}'
               priority: WARNING
               manual_close: 'YES'
@@ -937,7 +958,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM DBbackup'
+                  value: 'TSM DB backup'
               trigger_prototypes:
                 - uuid: 0e6ae63ba7554904a3bd22db1701e804
                   expression: '(now() - last(/Template TSM checks zabbix agent passive/tsm.dbbak_last[{#DBBAK_LAST}]))>={$TSM.DBBAK.OLD.WARN}'
@@ -974,7 +995,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM DBbackup'
+                  value: 'TSM DB backup'
             - uuid: 2f89614e695b49109663ad0ab6addd69
               name: 'TSM DB backup volumes: backup type {#DBBAK_LIBRARY} {#DBBAK_VOL}'
               type: DEPENDENT
@@ -1000,7 +1021,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM DBbackup'
+                  value: 'TSM DB backup'
           master_item:
             key: discover_dbbak_vol
           lld_macro_paths:
@@ -1042,7 +1063,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM drives'
+                  value: 'TSM drive'
               trigger_prototypes:
                 - uuid: 4a2b2c07733142269fc1287922a1dbc0
                   expression: 'last(/Template TSM checks zabbix agent passive/tsm.drive.path[{#DRV_NAME}],#1)<>{$TSM.DRIVE.PATH.GOOD.STATUS} and last(/Template TSM checks zabbix agent passive/tsm.drive.path[{#DRV_NAME}],#2)<>{$TSM.DRIVE.PATH.GOOD.STATUS}'
@@ -1081,7 +1102,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM drives'
+                  value: 'TSM drive'
               trigger_prototypes:
                 - uuid: c1506c88bc824366bb446c171cbd263a
                   expression: 'last(/Template TSM checks zabbix agent passive/tsm.drive.status[{#DRV_NAME}],#1)<>{$TSM.DRIVE.GOOD.STATUS} and last(/Template TSM checks zabbix agent passive/tsm.drive.status[{#DRV_NAME}],#2)<>{$TSM.DRIVE.GOOD.STATUS}'
@@ -1114,9 +1135,7 @@ zabbix_export:
               type: DEPENDENT
               key: 'tsm.lib.bakvol[{#LIB_NAME}]'
               delay: '0'
-              history: 7d
-              value_type: CHAR
-              trends: '0'
+              history: 14d
               preprocessing:
                 - type: JSONPATH
                   parameters:
@@ -1137,9 +1156,7 @@ zabbix_export:
               type: DEPENDENT
               key: 'tsm.lib.datvol[{#LIB_NAME}]'
               delay: '0'
-              history: 7d
-              value_type: CHAR
-              trends: '0'
+              history: 14d
               preprocessing:
                 - type: JSONPATH
                   parameters:
@@ -1282,7 +1299,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM data'
+                  value: 'TSM client data'
           master_item:
             key: nodedata_get
           lld_macro_paths:
@@ -1347,7 +1364,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM clients'
+                  value: 'TSM client'
             - uuid: 969bccb6b15f45e6bde017d72f6ac432
               name: 'TSM client: last backup status {#POL_DOM} {#NODE_NAME}'
               type: DEPENDENT
@@ -1373,7 +1390,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM clients'
+                  value: 'TSM client'
             - uuid: 614f1183067f448a9ec2d2e7ecfce51a
               name: 'TSM client: failed logon count {#POL_DOM} {#NODE_NAME}'
               type: DEPENDENT
@@ -1395,7 +1412,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM clients'
+                  value: 'TSM client'
               trigger_prototypes:
                 - uuid: 47c3dc52d4d1476fbb71ef41a8c4f54b
                   expression: 'last(/Template TSM checks zabbix agent passive/tsm.node.flogoncnt[{#POL_DOM},{#NODE_NAME}])>={$TSM.NODE.FLOGON.HIGH:"{#NODE_NAME}"}'
@@ -1433,7 +1450,33 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM clients'
+                  value: 'TSM client'
+            - uuid: 622a29ffb0874fc6bafb509e944e7b9a
+              name: 'TSM client: name {#NODE_NAME}'
+              type: DEPENDENT
+              key: 'tsm.node.name[{#POL_DOM},{#NODE_NAME}]'
+              delay: '0'
+              history: 7d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.node_name == ''{#NODE_NAME}'' && @.node_pdom == ''{#POL_DOM}'')].node_name'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              master_item:
+                key: nodes_get
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM client'
             - uuid: cffce9d0c21b4e00bfe1096ba0e0819c
               name: 'TSM client: number of associated schedules {#POL_DOM} {#NODE_NAME}'
               type: DEPENDENT
@@ -1458,7 +1501,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM clients'
+                  value: 'TSM client'
           master_item:
             key: nodes_get
           lld_macro_paths:
@@ -1476,7 +1519,7 @@ zabbix_export:
           lifetime: '0'
           item_prototypes:
             - uuid: aa23df7794b547a4b965ec7585534ed6
-              name: 'TSM Policy change pending: name: {#POL_DOM_NAME} set: {#POL_SET_NAME} mgclass: {#POL_MGMT_CLASS}'
+              name: 'TSM policy change pending: name: {#POL_DOM_NAME} set: {#POL_SET_NAME} mgclass: {#POL_MGMT_CLASS}'
               type: DEPENDENT
               key: 'tsm.pol.ch_pending[{#POL_DOM_NAME},{#POL_SET_NAME},{#POL_MGMT_CLASS}]'
               delay: '0'
@@ -1513,7 +1556,7 @@ zabbix_export:
                     - tag: Notify
                       value: 'TSM admins'
             - uuid: 437e5eb8067840788590e5df46ec75c7
-              name: 'TSM Policy last changed: name: {#POL_DOM_NAME} set: {#POL_SET_NAME} mgclass: {#POL_MGMT_CLASS}'
+              name: 'TSM policy last changed: name: {#POL_DOM_NAME} set: {#POL_SET_NAME} mgclass: {#POL_MGMT_CLASS}'
               type: DEPENDENT
               key: 'tsm.pol.last_chnaged[{#POL_DOM_NAME},{#POL_SET_NAME},{#POL_MGMT_CLASS}]'
               delay: '0'
@@ -1794,7 +1837,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM volumes'
+                  value: 'TSM volume'
               trigger_prototypes:
                 - uuid: ee617bee6cef43baaf0cf682954640a8
                   expression: 'find(/Template TSM checks zabbix agent passive/tsm.vol.acc[{#VOL_NAME}],1h,"iregexp","{$TSM.VOL.BAD.STATUS:''{#VOL_NAME}''}")=1'
@@ -1829,7 +1872,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM volumes'
+                  value: 'TSM volume'
               trigger_prototypes:
                 - uuid: 0cdceffb015e40799dae4f4ba105468a
                   expression: 'change(/Template TSM checks zabbix agent passive/tsm.vol.err_r[{#VOL_NAME}])>0'
@@ -1864,7 +1907,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM volumes'
+                  value: 'TSM volume'
               trigger_prototypes:
                 - uuid: babddf65af054d169f3375d66d831319
                   expression: 'change(/Template TSM checks zabbix agent passive/tsm.vol.err_w[{#VOL_NAME}])>0'
@@ -1899,10 +1942,10 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM volumes'
+                  value: 'TSM volume'
               trigger_prototypes:
                 - uuid: 86d79f8f774140fab96cd4d19e7ad325
-                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.mounts[{#VOL_NAME}])={$TSM.VOL.TIMES.MOUNTED:"{#VOL_NAME}"}'
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.mounts[{#VOL_NAME}])>={$TSM.VOL.TIMES.MOUNTED:"{#VOL_NAME}"}'
                   name: 'TSM: Volume: {#VOL_NAME} times mounted: {ITEM.VALUE1} - consider replacing it'
                   priority: INFO
                   manual_close: 'YES'
@@ -1935,7 +1978,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM volumes'
+                  value: 'TSM volume'
               trigger_prototypes:
                 - uuid: 8db666a3a2e64077bc9c9e4d4c4078a5
                   expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.state[{#VOL_NAME}])="Yes"'
@@ -1974,7 +2017,7 @@ zabbix_export:
                 - tag: Application
                   value: TSM
                 - tag: Application
-                  value: 'TSM volumes'
+                  value: 'TSM volume'
           trigger_prototypes:
             - uuid: 7a9d68198e434e1caac30a166396cf93
               expression: 'last(/Template TSM checks zabbix agent passive/tsm.vol.err_r[{#VOL_NAME}])>={$TSM.VOL.R_ERRS.HIGH:"{#VOL_NAME}"} and find(/Template TSM checks zabbix agent passive/tsm.vol.acc[{#VOL_NAME}],,"iregexp","read")=1'
@@ -2017,23 +2060,31 @@ zabbix_export:
           description: 'Numer of failed adm schedules to alert on'
         - macro: '{$TSM.DB.SPACE.LOW.DURATION}'
           value: 15m
+          description: 'Diration of low space event to alert on'
         - macro: '{$TSM.DB.SPACE.USAGE.CRIT}'
           value: '95'
+          description: 'Critical usage percent of TSM db space'
         - macro: '{$TSM.DB.SPACE.USAGE.WARN}'
           value: '90'
+          description: 'Warning usage percent of TSM db space'
         - macro: '{$TSM.DBBAK.OLD.WARN}'
           value: '93600'
           description: 'Alert on TSM db backup older than number of seconds'
         - macro: '{$TSM.DRIVE.GOOD.STATUS}'
           value: Online
+          description: 'Status which identifies healthy drive'
         - macro: '{$TSM.DRIVE.PATH.GOOD.STATUS}'
           value: Online
+          description: 'Status which identifies healthy drive path'
         - macro: '{$TSM.LIB.GOOD.STATUS}'
           value: Online
+          description: 'Status which identifies healthy library'
         - macro: '{$TSM.LIB.SCRATCH.LOW}'
           value: '5'
+          description: 'Remaining number of library scratch volumes to alert'
         - macro: '{$TSM.LIB.SCRATCH.LOW.DUR}'
           value: 2h
+          description: 'Duration of low scratch event before alert'
         - macro: '{$TSM.LLD.ADMSCHED.ACTIVITY.SATE}'
           value: '.*'
           description: 'Set AdmSchdeule active status (Yes/No) to limit discovery by status'
@@ -2076,7 +2127,7 @@ zabbix_export:
           value: '.*'
           description: 'List of stgpools to include in nodedata discovery e.g. stgp1|stgp2'
         - macro: '{$TSM.NODATA_TIMEOUT}'
-          value: 10m
+          value: 15m
         - macro: '{$TSM.NODE.FLOGON.HIGH}'
           value: '2'
           description: 'Node''s failed logon count'
