@@ -9,12 +9,12 @@
 #################
 # CONFIGURATION #
 #################
-tmp_dir=/tmp/zbxtsm													# - directory for data files, it will be created by the script
-tsm_binary="/usr/bin/dsmadmc"										# - path to TSM administrative client executable
-tsm_user="USER"														# - TSM user id
-tsm_pass="PASS"														# - TSM user password
+tmp_dir=/tmp/zbxtsm                                                   # - directory for data files, it will be created by the script
+tsm_binary="/usr/bin/dsmadmc"                                         # - path to TSM administrative client executable
+tsm_user="USER"                                                     # - TSM user id
+tsm_pass="PASS"                                                  # - TSM user password
 internal_tsmserver_name=$("$tsm_binary" -id=$tsm_user -pa=$tsm_pass -dataonly=yes -displaymode=list q status | grep 'Server Name' | awk -F ':' '{print $2}' | xargs)
-[[ -z $internal_tsmserver_name ]] && internal_tsmserver_name="TSM"	# - change this asignment according to your environment
+[[ -z $internal_tsmserver_name ]] && internal_tsmserver_name="TSM"    # - change this asignment according to your environment
 
 # PREREQUISITES CHECKS
 [[ ! `which "which" 2>/dev/null` ]] && echo "This script requres: which" && exit 1
@@ -42,7 +42,7 @@ internal_tsmserver_name=$("$tsm_binary" -id=$tsm_user -pa=$tsm_pass -dataonly=ye
 
 # TSM commands execution function
 function tsm_cmd {
-	"$tsm_binary" -id=$tsm_user -pa=$tsm_pass -dataonly=yes "$@"  | grep -Ev 'ANS0102W|ANS2036W' # shuts up persistent warning
+	"$tsm_binary" -id=$tsm_user -pa=$tsm_pass -dataonly=yes "$@" | grep -Ev 'ANS0102W|ANS2036W' # shuts up persistent warning
 }
 
 # LLD discovery and other agent check functions
@@ -650,6 +650,46 @@ function discover_policy {
         printf  "]"
 }
 
+function discover_domain {
+        local TSM_STATS=${tmp_dir}/zbxtsm_domain_stats.txt
+        local x
+        tsm_cmd -tab q dom f=d > $TSM_STATS
+        # for reference:
+        # $1 - Policy Domain Name
+        # $2 - Activated Policy Set
+        # $5 - Activated Default Mgmt Class
+        # $6 - Number of Registered Nodes
+        # $11 - Last Update Date/Time
+        # $13 - Changes Pending
+
+        length_cur=1
+        printf  "["
+        array_c01=(`cat ${TSM_STATS} | awk -F '\t' '{print $1}'| tr ' ' '_' | sed 's/^$/n\/a/g'`)
+        array_c02=(`cat ${TSM_STATS} | awk -F '\t' '{print $2}'| tr ' ' '_' | sed 's/^$/n\/a/g'`)
+        array_c05=(`cat ${TSM_STATS} | awk -F '\t' '{print $5}'| tr ' ' '_' | sed 's/^$/n\/a/g'`)
+        array_c06=(`cat ${TSM_STATS} | awk -F '\t' '{print $6}'| tr ' ' '_' | sed 's/^$/n\/a/g'`)
+        array_c11=(`cat ${TSM_STATS} | awk -F '\t' '{print $11}'| tr ' ' '_' | sed 's/^$/n\/a/g'`)
+        array_c13=(`cat ${TSM_STATS} | awk -F '\t' '{print $13}'| tr ' ' '_' | sed 's/^$/n\/a/g'`)
+        length_arr=${#array_c01[@]}
+
+        for ((i=0;i<$length_arr;i++))
+        do
+                printf '{'
+                printf "\"dom_name\":\"${array_c01[$i]}\","
+                printf "\"act_pol_set\":\"${array_c02[$i]}\","
+                printf "\"def_mgmt_class\":\"${array_c05[$i]}\","
+                printf "\"dom_nodes\":\"${array_c06[$i]}\","
+                printf "\"dom_last_changed\":\"${array_c11[$i]}\","
+                printf "\"dom_change_pending\":\"${array_c13[$i]}\"}"
+
+                if [ $length_cur -lt $[length_arr] ];then
+                        printf ','
+                fi
+                let "length_cur = $length_cur +1"
+        done
+        printf  "]"
+}
+
 function node_last_ba {
         local q_node_name=\'$1\'
         local q_node_pdom=\'$2\'
@@ -817,6 +857,11 @@ function tsm_uptime {
                         $func "$@"
                 ;;
                 discover_policy )
+                        func="$1"
+                        shift
+                        $func "$@"
+                ;;
+                discover_domain )
                         func="$1"
                         shift
                         $func "$@"

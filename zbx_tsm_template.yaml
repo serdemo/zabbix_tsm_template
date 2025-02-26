@@ -94,6 +94,18 @@ zabbix_export:
               value: TSM
             - tag: Application
               value: 'TSM agent'
+        - uuid: bba86a839c2e4c88a2cf720e17ee210c
+          name: 'Get domains'
+          key: discover_domain
+          delay: 10m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: TSM
+            - tag: Application
+              value: 'TSM agent'
         - uuid: 3fa17452e71d45c2bbf868467115aff3
           name: 'Get drives'
           key: discover_drives
@@ -871,14 +883,14 @@ zabbix_export:
             - uuid: 88857af459c64bd3bd00de5636ef7c53
               expression: '(length(last(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}]))>0 and count(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}],#2)=1 and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.RECENT.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0) or (length(last(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}]))>0 and change(/Template TSM checks zabbix agent passive/get_failed_baksched[{#SCHED_DOM},{#SCHED_NAME},{#SCHED_WINDOW_HOUR}])=1 and find(/Template TSM checks zabbix agent passive/tsm.sched.name[{#SCHED_DOM},{#SCHED_NAME}],,"iregexp","{$TSM.SCHED.RECENT.ALERT.EXCLUDE:''{#SCHED_NAME}''}")=0)'
               name: 'TSM: Schedule: {#SCHED_DOM} {#SCHED_NAME}: Recently failed task(s): {ITEM.VALUE1}'
-              priority: AVERAGE
+              priority: WARNING
               type: MULTIPLE
               manual_close: 'YES'
               tags:
                 - tag: Notify
                   value: 'off'
                 - tag: Notify
-                  value: 'TSM admin'
+                  value: 'TSM admins'
                 - tag: Notify
                   value: 'TSM sched {#SCHED_DOM}'
                 - tag: Notify
@@ -892,7 +904,7 @@ zabbix_export:
                 - tag: Notify
                   value: 'off'
                 - tag: Notify
-                  value: 'TSM admin'
+                  value: 'TSM admins'
                 - tag: Notify
                   value: 'TSM sched {#SCHED_NAME}'
             - uuid: 11c5247a26e0444fa736dacc07f9a147
@@ -904,7 +916,7 @@ zabbix_export:
                 - tag: Notify
                   value: 'off'
                 - tag: Notify
-                  value: 'TSM admin'
+                  value: 'TSM admins'
                 - tag: Notify
                   value: 'TSM sched {#SCHED_NAME}'
             - uuid: 457133fff1ae452fb00ae41e26a559f3
@@ -916,7 +928,7 @@ zabbix_export:
                 - tag: Notify
                   value: 'off'
                 - tag: Notify
-                  value: 'TSM admin'
+                  value: 'TSM admins'
                 - tag: Notify
                   value: 'TSM sched {#SCHED_NAME}'
           master_item:
@@ -1031,6 +1043,50 @@ zabbix_export:
               path: $.dbbak_library
             - lld_macro: '{#DBBAK_VOL}'
               path: $.dbbak_vol
+        - uuid: 2b002800f9464dc0b00a1be504fe5583
+          name: 'Discover TSM domains'
+          type: DEPENDENT
+          key: lld.disc.tsm.dom
+          delay: '0'
+          lifetime: '0'
+          item_prototypes:
+            - uuid: b3040613615946088daf3aa20c5ac610
+              name: 'TSM domain change pending: name: {#DOM_NAME}'
+              type: DEPENDENT
+              key: 'tsm.dom.ch_pending[{#DOM_NAME}]'
+              delay: '0'
+              history: 30d
+              value_type: CHAR
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[?(@.dom_name == ''{#DOM_NAME}'')].dom_change_pending'
+                - type: REGEX
+                  parameters:
+                    - '\[\"(.*)\"\]'
+                    - \1
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1h
+              master_item:
+                key: discover_domain
+              tags:
+                - tag: Application
+                  value: TSM
+                - tag: Application
+                  value: 'TSM domain'
+              trigger_prototypes:
+                - uuid: 980b75aa886f4eeb8eb42d73640efead
+                  expression: 'last(/Template TSM checks zabbix agent passive/tsm.dom.ch_pending[{#DOM_NAME}])={$TSM.DOM.CHANGE.PENDING:"#DOM_NAME"}'
+                  name: 'TSM: Domain change pending: name: {#DOM_NAME}'
+                  priority: INFO
+                  manual_close: 'YES'
+          master_item:
+            key: discover_domain
+          lld_macro_paths:
+            - lld_macro: '{#DOM_NAME}'
+              path: $.dom_name
         - uuid: b6d9f1037a0249cfb9ae8f332229d61c
           name: 'Discover TSM drives'
           type: DEPENDENT
@@ -1536,7 +1592,7 @@ zabbix_export:
                     - \1
                 - type: DISCARD_UNCHANGED_HEARTBEAT
                   parameters:
-                    - 1d
+                    - 1h
               master_item:
                 key: discover_policy
               tags:
@@ -1573,7 +1629,7 @@ zabbix_export:
                     - \1
                 - type: DISCARD_UNCHANGED_HEARTBEAT
                   parameters:
-                    - 1d
+                    - 1h
               master_item:
                 key: discover_policy
               tags:
@@ -2070,6 +2126,9 @@ zabbix_export:
         - macro: '{$TSM.DBBAK.OLD.WARN}'
           value: '93600'
           description: 'Alert on TSM db backup older than number of seconds'
+        - macro: '{$TSM.DOM.CHANGE.PENDING}'
+          value: 'Yes'
+          description: 'Notify on pending domain changes'
         - macro: '{$TSM.DRIVE.GOOD.STATUS}'
           value: Online
           description: 'Status which identifies healthy drive'
